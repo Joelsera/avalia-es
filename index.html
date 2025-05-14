@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Avalie o Restaurante Tio Armênio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    
+    }
+    h1 {
+      color: #333;
+    }
+    .comment-box {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f7f7f7;
+      font-size: 1.1em;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn {
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 1em;
+      border-radius: 5px;
+    }
+    .btn:hover {
+      background: #218c4f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Avalie o Restaurante Tio Armênio</h1>
+    <p>Clique em “Gerar Comentário” para obter um elogio único sobre o atendimento.</p>
+    <div class="comment-box" id="commentBox">Clique em "Gerar Comentário" para gerar seu elogio...</div>
+    <button class="btn" onclick="generateComment()">Gerar Comentário</button>
+    <button class="btn" onclick="copyComment()">Copiar e Avaliar no Google Maps</button>
+  </div>
+
+  <script>
+    const servicePhrases = [
+      "O atendimento no Restaurante Tio Armênio é",
+      "Minha experiência no Restaurante Tio Armênio foi",
+      "Fiquei muito satisfeito com o atendimento do Restaurante Tio Armênio, que é",
+      "No Restaurante Tio Armênio, a qualidade do serviço é"
+    ];
+    const serviceAdjectives = [
+      "excepcional",
+      "impecável",
+      "de altíssima qualidade",
+      "memorável",
+      "incrível",
+      "extraordinário"
+    ];
+    const managerPhrases = [
+      "com o gerente Beto sempre disponível para garantir a melhor experiência.",
+      "e o gerente Beto se destaca pelo cuidado e atenção aos clientes.",
+      "enquanto o gerente Beto garante um atendimento diferenciado e de alta qualidade.",
+      "com a supervisão impecável do gerente Beto, que cuida de cada detalhe."
+    ];
+    const staffPhrases = [
+      "Os garçons são ágeis, simpáticos e fazem toda a diferença na experiência.",
+      "Os garçons do restaurante são muito educados, prestativos e garantem um ótimo atendimento.",
+      "Os garçons oferecem um atendimento rápido e atencioso, tornando cada visita especial.",
+      "Serviço ágil e cortês dos garçons, tornando a experiência ainda mais agradável."
+    ];
+    const chefPhrases = [
+      "O chefe de cozinha Rafael surpreende com pratos bem elaborados e saborosos.",
+      "O chefe Rafael cria receitas incríveis, proporcionando uma experiência gastronômica única.",
+      "Os pratos preparados pelo chefe Rafael são impecáveis e equilibrados no tempero.",
+      "A criatividade do chefe Rafael faz toda a diferença nos pratos servidos."
+    ];
+    const productPhrases = [
+      "Os caldinhos são bem servidos e equilibrados no tempero, e o bolinho de bacalhau é irresistível.",
+      "Os caldinhos têm um sabor marcante, enquanto o bolinho de bacalhau é crocante por fora e macio por dentro.",
+      "Os pratos são incríveis: caldinhos bem temperados, bolinho de bacalhau impecável e opções variadas para almoço e jantar.",
+      "A qualidade dos ingredientes torna cada refeição especial, destacando-se os caldinhos e o bolinho de bacalhau."
+    ];
+    const musicPhrases = [
+      "Além disso, a música ao vivo nas noites de quinta e sábado complementa a experiência com um ambiente animado.",
+      "Para completar, o som ao vivo nas noites de quinta e sábado cria um clima descontraído e agradável.",
+      "E o toque especial da música ao vivo nas quintas e sábados torna o jantar inesquecível.",
+      "A música ao vivo nas quintas e sábados faz toda a diferença, garantindo uma noite especial."
+    ];
+
+    let usedComments = new Set();
+    const maxComments = 5000;
+
+    function randomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateComment() {
+      if (usedComments.size >= maxComments) {
+        document.getElementById("commentBox").innerText =
+          "Você atingiu o máximo de comentários únicos! Atualize a página para gerar novos.";
+        return;
+      }
+      
+      let comment = randomItem(servicePhrases) + " " + randomItem(serviceAdjectives) + ". " +
+                    randomItem(managerPhrases) + " " + randomItem(staffPhrases) + " " +
+                    randomItem(chefPhrases) + " " + randomItem(productPhrases) + " " +
+                    randomItem(musicPhrases);
+      
+      while (comment.length < 100) {
+        comment += " " + randomItem(musicPhrases);
+      }
+
+      let attempts = 0;
+      while (usedComments.has(comment) && attempts < 100) {
+        comment = randomItem(servicePhrases) + " " + randomItem(serviceAdjectives) + ". " +
+                  randomItem(managerPhrases) + " " + randomItem(staffPhrases) + " " +
+                  randomItem(chefPhrases) + " " + randomItem(productPhrases) + " " +
+                  randomItem(musicPhrases);
+        while (comment.length < 100) {
+          comment += " " + randomItem(musicPhrases);
+        }
+        attempts++;
+      }
+      
+      usedComments.add(comment);
+      document.getElementById("commentBox").innerText = comment;
+    }
+
+    function copyComment() {
+      const commentText = document.getElementById("commentBox").innerText;
+      if (commentText.includes("Clique em")) {
+        alert("Por favor, gere um comentário antes de copiar.");
+        return;
+      }
+      navigator.clipboard.writeText(commentText)
+        .then(() => {
+          alert("Comentário copiado! Agora você será redirecionado para o Google Maps.");
+          window.open("https://www.google.com/maps/search/?api=1&query=Restaurante+Tio+Armênio+Plaza+Shopping+Casa+Forte+Avaliacoes", "_blank");
+        })
+        .catch(err => {
+          alert("Erro ao copiar o comentário: " + err);
+        });
+    }
+  </script>
+</body>
+</html>
